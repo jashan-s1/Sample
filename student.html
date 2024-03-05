@@ -1,0 +1,72 @@
+<!-- student.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Interface</title>
+</head>
+<body>
+    <h2>Submit Request Form</h2>
+    <form id="requestForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="uid">UID:</label>
+        <input type="text" id="uid" name="uid" required><br>
+
+        <label for="branch">Branch:</label>
+        <input type="text" id="branch" name="branch" required><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+
+        <label for="place">Place of Visit:</label>
+        <input type="text" id="place" name="place" required><br>
+
+        <label for="timeOut">Time Out:</label>
+        <input type="time" id="timeOut" name="timeOut" required><br>
+
+        <label for="timeIn">Time In:</label>
+        <input type="time" id="timeIn" name="timeIn" required><br>
+
+        <label for="gatepassType">Gatepass Type:</label>
+        <select id="gatepassType" name="gatepassType" required>
+            <option value="dayOut">Day Out</option>
+            <option value="nightOut">Night Out</option>
+        </select><br>
+
+        <button type="button" onclick="submitRequest()">Submit Request</button>
+    </form>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:3000');
+
+        function submitRequest() {
+            const name = document.getElementById('name').value;
+            const uid = document.getElementById('uid').value;
+            const branch = document.getElementById('branch').value;
+            const date = document.getElementById('date').value;
+            const place = document.getElementById('place').value;
+            const timeOut = document.getElementById('timeOut').value;
+            const timeIn = document.getElementById('timeIn').value;
+            const gatepassType = document.getElementById('gatepassType').value;
+
+            const requestInfo = {
+                name,
+                uid,
+                branch,
+                date,
+                place,
+                timeOut,
+                timeIn,
+                gatepassType
+            };
+
+            // Send the request information to the server
+            socket.send(JSON.stringify(requestInfo));
+        }
+    </script>
+</body>
+</html>

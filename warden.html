@@ -1,0 +1,65 @@
+<!-- warden.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warden Interface</title>
+</head>
+<body>
+    <h2>Requests Table</h2>
+    <table id="requestTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>UID</th>
+                <th>Branch</th>
+                <th>Date</th>
+                <th>Place of Visit</th>
+                <th>Time Out</th>
+                <th>Time In</th>
+                <th>Gatepass Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:3000');
+
+        socket.onmessage = (event) => {
+            const requests = JSON.parse(event.data);
+            // Update the table with the new requests
+            updateTable(requests);
+        };
+
+        function updateTable(requests) {
+            const table = document.getElementById('requestTable').getElementsByTagName('tbody')[0];
+            // Clear existing rows
+            table.innerHTML = '';
+
+            requests.forEach(requestInfo => {
+                const row = table.insertRow();
+                const keys = Object.keys(requestInfo);
+                keys.forEach(key => {
+                    const cell = row.insertCell();
+                    cell.innerHTML = requestInfo[key];
+                });
+
+                const actionsCell = row.insertCell();
+                actionsCell.innerHTML = '<button onclick="accept()">Accept</button> <button onclick="reject()">Reject</button>';
+            });
+        }
+
+        function accept() {
+            // Handle accept action
+        }
+
+        function reject() {
+            // Handle reject action
+        }
+    </script>
+</body>
+</html>
